@@ -3,7 +3,13 @@ dnsservers:
   - 1.0.0.1
   - 8.8.8.8
   - 8.8.4.4
+  - 9.9.9.9
+  - 45.90.28.65
+  - 45.90.30.65
 
 domains:
   - google.com
   - reddit.com
+  - apple.com
+  - microsoft.com
+  
