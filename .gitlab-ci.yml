@@ -11,9 +11,9 @@ build_main:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-      --destination "supporterino/dns-speed-tracker:latest"
-      --destination "supporterino/dns-speed-tracker:${CI_COMMIT_SHORT_SHA}"
-      --destination "supporterino/dns-speed-tracker:${VERSION}"
+      --destination "registry.supporterino.de/supporterino/dns-speed-tracker:latest"
+      --destination "registry.supporterino.de/supporterino/dns-speed-tracker:${CI_COMMIT_SHORT_SHA}"
+      --destination "registry.supporterino.de/supporterino/dns-speed-tracker:${VERSION}"
   rules:
     - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
 
@@ -29,7 +29,7 @@ build_branch:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-      --destination "supporterino/dns-speed-tracker:${CI_COMMIT_BRANCH}"
+      --destination "registry.supporterino.de/supporterino/dns-speed-tracker:${CI_COMMIT_BRANCH}"
   rules:
     - if: $CI_COMMIT_BRANCH != "release" && $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
 
@@ -45,6 +45,6 @@ build_merge:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-      --destination "supporterino/dns-speed-tracker:${CI_MERGE_REQUEST_IID}"
+      --destination "registry.supporterino.de/supporterino/dns-speed-tracker:${CI_MERGE_REQUEST_IID}"
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
