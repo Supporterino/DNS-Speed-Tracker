@@ -6,10 +6,37 @@ dnsservers:
   - 9.9.9.9
   - 45.90.28.65
   - 45.90.30.65
+  - 80.69.96.12
 
 domains:
   - google.com
-  - reddit.com
-  - apple.com
+  - facebook.com
+  - doubleclick.net
+  - google-analytics.com
+  - akamaihd.net
+  - googlesyndication.com
+  - googleapis.com
+  - googleadservices.com
+  - facebook.net
+  - youtube.com
+  - twitter.com
+  - scorecardresearch.com
   - microsoft.com
+  - ytimg.com
+  - googleusercontent.com
+  - apple.com
+  - msftncsi.com
+  - 2mdn.net
+  - googletagservices.com
+  - adnxs.com
+  - yahoo.com
+  - serving-sys.com
+  - akadns.net
+  - bluekai.com
+  - ggpht.com
+  - rubiconproject.com
+  - verisign.com
+  - addthis.com
+  - crashlytics.com
+  - amazonaws.com
   

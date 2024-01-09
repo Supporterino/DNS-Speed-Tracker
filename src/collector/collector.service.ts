@@ -18,12 +18,19 @@ export class CollectorService {
 
   @Cron('30 * * * * *')
   async run() {
+    this.logger.log('Collection cycle started.');
     const servers = this.configService.get<string[]>('dnsservers');
     const domains = this.configService.get<string[]>('domains');
 
-    domains.forEach((domain) => {
-      servers.forEach((server) => this.collectLatency(server, domain));
-    });
+    for (const domain of domains) {
+      for (const server of servers) {
+        await this.collectLatency(server, domain);
+      }
+    }
+    // domains.forEach((domain) => {
+    //   servers.forEach((server) => this.collectLatency(server, domain));
+    // });
+    this.logger.log('Collection cycle done.');
   }
 
   async collectLatency(server: string, domain: string) {
