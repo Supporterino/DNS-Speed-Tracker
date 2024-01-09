@@ -1,0 +1,15 @@
+build:
+  variables:
+      GIT_SUBMODULE_STRATEGY: recursive
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.1-debug
+    entrypoint: [""]
+  script:
+    - echo "$DOCKER_AUTH" > /kaniko/.docker/config.json
+    - export VERSION="v$(cat package.json | grep version | head -1 | awk -F':' '{ print $2 }' | sed 's/[\",]//g' | cut -c2-)"
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "supporterino/dns-latency-tracker:${VERSION}"
+      --destination "supporterino/dns-latency-tracker:latest"
