@@ -11,5 +11,5 @@ build:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-      --destination "supporterino/dns-latency-tracker:${VERSION}"
-      --destination "supporterino/dns-latency-tracker:latest"
+      --destination "registry.supporterino.de/supporterino/dns-latency-tracker:${VERSION}"
+      --destination "registry.supporterino.de/supporterino/dns-latency-tracker:latest"
