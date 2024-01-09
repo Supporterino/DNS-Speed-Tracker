@@ -14,7 +14,7 @@ import {
       name: 'dns_latency_histo',
       help: 'latency of am individual dns to a defined domain as histogram data',
       labelNames: ['dnsServer', 'domain', 'digVersion'],
-      buckets: [0, 1, 5, 10, 20, 25, 50, 75, 100],
+      buckets: [0, 1, 5, 10, 25, 50, 75, 100, 150],
     }),
     makeGaugeProvider({
       name: 'dns_latency',
