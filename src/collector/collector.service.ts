@@ -37,29 +37,22 @@ export class CollectorService {
   }
 
   async collectLatency(server: string, domain: string) {
-    try {
-      const result = await this.digService.dig(server, domain);
-      this.dnsLatencyHisto.observe(
-        {
-          dnsServer: result.dnsServer,
-          digVersion: result.digVersion,
-          domain: result.domain,
-        },
-        result.time,
-      );
-      this.dnsLatency.set(
-        {
-          dnsServer: result.dnsServer,
-          digVersion: result.digVersion,
-          domain: result.domain,
-        },
-        result.time,
-      );
-    } catch (err) {
-      this.dnsPacketLoss.inc({
-        dnsServer: server,
-        domain: domain,
-      });
-    }
+    const result = await this.digService.dig(server, domain);
+    this.dnsLatencyHisto.observe(
+      {
+        dnsServer: result.dnsServer,
+        digVersion: result.digVersion,
+        domain: result.domain,
+      },
+      result.time,
+    );
+    this.dnsLatency.set(
+      {
+        dnsServer: result.dnsServer,
+        digVersion: result.digVersion,
+        domain: result.domain,
+      },
+      result.time,
+    );
   }
 }

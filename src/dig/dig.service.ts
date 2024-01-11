@@ -8,7 +8,6 @@ export class DigService {
   parse(input: string) {
     this.logger.verbose(`Received input ${JSON.stringify(input)}`);
     const lines = input.split('\n');
-    if (lines.length < 6) throw new Error('DNS resolution failed');
     const result: DigResultDto = {};
 
     lines.forEach((line) => {
