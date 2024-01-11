@@ -58,7 +58,7 @@ export class CollectorService {
     } catch (err) {
       this.dnsPacketLoss.inc({
         dnsServer: server,
-        digVersion: domain,
+        domain: domain,
       });
     }
   }
