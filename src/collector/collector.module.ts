@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CollectorService } from './collector.service';
 import { DigModule } from 'src/dig/dig.module';
 import {
+  makeCounterProvider,
   makeGaugeProvider,
   makeHistogramProvider,
 } from '@willsoto/nestjs-prometheus';
@@ -20,6 +21,11 @@ import {
       name: 'dns_latency',
       help: 'latency of am individual dns to a defined domain',
       labelNames: ['dnsServer', 'domain', 'digVersion'],
+    }),
+    makeCounterProvider({
+      name: 'dns_packet_loss',
+      help: 'Domains which failed a dns resolution',
+      labelNames: ['dnsServer', 'domain'],
     }),
   ],
 })
