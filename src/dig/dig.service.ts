@@ -8,6 +8,7 @@ export class DigService {
   parse(input: string) {
     this.logger.verbose(`Received input ${JSON.stringify(input)}`);
     const lines = input.split('\n');
+    if (lines.length < 6) throw new Error('DNS lookup failed.');
     const result: DigResultDto = {};
 
     lines.forEach((line) => {
@@ -38,7 +39,7 @@ export class DigService {
 
   dig(dnsServer: string, target: string): Promise<DigResultDto> {
     return new Promise((resolve, reject) => {
-      const process = spawn('dig', [`@${dnsServer}`, target, '+time-1']);
+      const process = spawn('dig', [`@${dnsServer}`, target, '+time=1']);
       let output = '';
 
       process.on('error', (error) => {

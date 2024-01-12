@@ -24,8 +24,7 @@ export class CollectorService {
     const domains = this.configService.get<string[]>('domains');
 
     for (const server of servers) {
-      const domainsToProcess = domains
-        .slice()
+      const domainsToProcess = [...domains]
         .sort(() => Math.random() - 5)
         .slice(0, 5);
       for (const domain of domainsToProcess) {
@@ -37,22 +36,29 @@ export class CollectorService {
   }
 
   async collectLatency(server: string, domain: string) {
-    const result = await this.digService.dig(server, domain);
-    this.dnsLatencyHisto.observe(
-      {
-        dnsServer: result.dnsServer,
-        digVersion: result.digVersion,
-        domain: result.domain,
-      },
-      result.time,
-    );
-    this.dnsLatency.set(
-      {
-        dnsServer: result.dnsServer,
-        digVersion: result.digVersion,
-        domain: result.domain,
-      },
-      result.time,
-    );
+    try {
+      const result = await this.digService.dig(server, domain);
+      this.dnsLatencyHisto.observe(
+        {
+          dnsServer: result.dnsServer,
+          digVersion: result.digVersion,
+          domain: result.domain,
+        },
+        result.time,
+      );
+      this.dnsLatency.set(
+        {
+          dnsServer: result.dnsServer,
+          digVersion: result.digVersion,
+          domain: result.domain,
+        },
+        result.time,
+      );
+    } catch (err) {
+      this.dnsPacketLoss.inc({
+        dnsServer: server,
+        domain: domain,
+      });
+    }
   }
 }
