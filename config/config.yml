@@ -9,6 +9,7 @@ dnsservers:
   - 80.69.96.12
   - 10.2.0.1
   - 10.2.0.4
+  - 10.2.0.5
 
 domains:
   - google.com
