@@ -4,6 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter, Gauge, Histogram } from 'prom-client';
 import { DigService } from 'src/dig/dig.service';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class CollectorService {
@@ -24,15 +25,22 @@ export class CollectorService {
     const domains = this.configService.get<string[]>('domains');
 
     for (const server of servers) {
-      const domainsToProcess = [...domains]
-        .sort(() => Math.random() - 5)
-        .slice(0, 5);
+      const domainsToProcess = this.getRandomElementsFromArray(domains, 5);
       for (const domain of domainsToProcess) {
         await this.collectLatency(server, domain);
       }
     }
 
     this.logger.log('Collection cycle done.');
+  }
+
+  getRandomElementsFromArray(arr: string[], count: number): string[] {
+    const shuffledArray = arr.slice().sort(() => {
+      const randomBytess = randomBytes(4);
+      const randomValue = randomBytess.readUInt32LE(0) / 0xffffffff;
+      return randomValue;
+    });
+    return shuffledArray.slice(0, count);
   }
 
   async collectLatency(server: string, domain: string) {
