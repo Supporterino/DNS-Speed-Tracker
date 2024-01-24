@@ -4,7 +4,6 @@ import { Cron } from '@nestjs/schedule';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter, Gauge, Histogram } from 'prom-client';
 import { DigService } from 'src/dig/dig.service';
-import { randomBytes } from 'crypto';
 
 @Injectable()
 export class CollectorService {
@@ -25,7 +24,8 @@ export class CollectorService {
     const domains = this.configService.get<string[]>('domains');
 
     for (const server of servers) {
-      const domainsToProcess = this.getRandomElementsFromArray(domains, 5);
+      const domainsToProcess = this.getRandomElements(domains, 5);
+      this.logger.debug(domainsToProcess);
       for (const domain of domainsToProcess) {
         await this.collectLatency(server, domain);
       }
@@ -34,13 +34,18 @@ export class CollectorService {
     this.logger.log('Collection cycle done.');
   }
 
-  getRandomElementsFromArray(arr: string[], count: number): string[] {
-    const shuffledArray = arr.slice().sort(() => {
-      const randomBytess = randomBytes(4);
-      const randomValue = randomBytess.readUInt32LE(0) / 0xffffffff;
-      return randomValue;
-    });
-    return shuffledArray.slice(0, count);
+  getRandomElements(arr: string[], count: number): string[] {
+    if (count >= arr.length) {
+      return arr.slice(); // Return a copy of the whole array if count is greater than or equal to the array length
+    }
+
+    const shuffled = arr.slice(); // Create a copy of the array
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements randomly
+    }
+
+    return shuffled.slice(0, count); // Return the first 'count' elements from the shuffled array
   }
 
   async collectLatency(server: string, domain: string) {
